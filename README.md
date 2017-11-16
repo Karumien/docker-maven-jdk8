@@ -10,7 +10,7 @@ This repository contains **Dockerfile** of [Java](https://www.java.com/) for [Do
 
 ### Versions
 
-* centos:latest
+* CentOS 7
 * Oracle JDK 8u152-b16-linux-x64
 * Maven 3.5.2
 
@@ -26,7 +26,7 @@ This repository contains **Dockerfile** of [Java](https://www.java.com/) for [Do
 
 ### Usage
 
-    docker run -it --rm karumien/centos-maven-oracle-jdk8
+    docker run -it --rm karumien/centos-maven-jdk8
 
 
 ### License
