@@ -8,6 +8,13 @@ This repository contains **Dockerfile** of [Java](https://www.java.com/) for [Do
 * [centos](https://hub.docker.com/_/centos/)
 
 
+### Versions
+
+* centos:latest
+* Oracle JDK 8u152-b16-linux-x64
+* Maven 3.5.2
+
+
 ### Installation
 
 1. Install [Docker](https://www.docker.com/).
