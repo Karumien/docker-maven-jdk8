@@ -69,6 +69,9 @@ RUN wget --no-check-certificate --no-cookies https://repo1.maven.org/maven2/org/
     && rm -f apache-maven-${MAVEN_VERSION}-bin.tar.gz \
     && rm -f apache-maven-${MAVEN_VERSION}-bin.tar.gz.md5
 
-# add executables to path
+# Add executables to path
 RUN update-alternatives --install "/usr/bin/mvn" "mvn" "/opt/mvn/bin/mvn" 1 && \
     update-alternatives --set "mvn" "/opt/mvn/bin/mvn" 
+
+# Cleaning
+rm -f /tmp/*
