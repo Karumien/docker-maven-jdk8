@@ -3,20 +3,12 @@ FROM centos:latest
 MAINTAINER Miroslav Svoboda <miroslav.svoboda@karumien.com>
 
 # Set environment variables for versions
-ENV JDK_VERSION=8
-ENV JDK_UPDATE=152
-ENV JDK_BUILD=b16
-ENV JDK_DISTRO_ARCH=linux-x64
-
-ENV JCE_FOLDER=UnlimitedJCEPolicyJDK$JDK_VERSION
-ENV JDK_FOLDER=jdk1.$JDK_VERSION.0_$JDK_UPDATE
-ENV JDK_VERSION_UPDATE=$JDK_VERSION'u'$JDK_UPDATE
-ENV JDK_VERSION_UPDATE_BUILD=$JDK_VERSION_UPDATE'-'$JDK_BUILD
-ENV JDK_VERSION_UPDATE_DISTRO_ARCH=$JDK_VERSION_UPDATE'-'$JDK_DISTRO_ARCH
-
-ENV JAVA_HOME=/opt/java
-ENV JRE_SECURITY_FOLDER=$JAVA_HOME/jre/lib/security
-ENV SSL_TRUSTED_CERTS_FOLDER=/opt/ssl/trusted
+ENV JAVA_VERSION=8 \
+    JAVA_UPDATE=152 \
+    JAVA_BUILD=16 \
+    JAVA_PATH=aa0333dd3019491ca4f6ddbe78cdb6d0 \
+    JAVA_HOME="/opt/java"
+    
 ENV PATH $PATH:$JAVA_HOME/bin
 
 # Install utils
@@ -27,13 +19,18 @@ RUN yum install -y wget
 WORKDIR /tmp
 
 # Download and extract jdk to opt folder
-RUN wget --no-check-certificate https://github.com/frekele/oracle-java/releases/download/${JDK_VERSION_UPDATE_BUILD}/jdk-${JDK_VERSION_UPDATE_DISTRO_ARCH}.tar.gz \
-    && wget --no-check-certificate https://github.com/frekele/oracle-java/releases/download/${JDK_VERSION_UPDATE_BUILD}/jdk-${JDK_VERSION_UPDATE_DISTRO_ARCH}.tar.gz.md5 \
-    && echo "$(cat jdk-${JDK_VERSION_UPDATE_DISTRO_ARCH}.tar.gz.md5) jdk-${JDK_VERSION_UPDATE_DISTRO_ARCH}.tar.gz" | md5sum -c \
-    && tar -zvxf jdk-${JDK_VERSION_UPDATE_DISTRO_ARCH}.tar.gz -C /opt \
-    && ln -s /opt/${JDK_FOLDER} /opt/java \
-    && rm -f jdk-${JDK_VERSION_UPDATE_DISTRO_ARCH}.tar.gz \
-    && rm -f jdk-${JDK_VERSION_UPDATE_DISTRO_ARCH}.tar.gz.md5
+RUN wget --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
+        "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/${JAVA_PATH}/jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" && \
+    tar -xzf "jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" && \
+    mkdir -p "/usr/lib/jvm" && \
+    mv "/tmp/jdk1.${JAVA_VERSION}.0_${JAVA_UPDATE}" "/usr/lib/jvm/java-${JAVA_VERSION}-oracle" && \
+    ln -s "/usr/lib/jvm/java-${JAVA_VERSION}-oracle" "$JAVA_HOME" && \
+    rm -rf "$JAVA_HOME/"*src.zip && \
+    wget --no-check-certificate --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
+        "http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION}/jce_policy-${JAVA_VERSION}.zip" && \
+    unzip -jo -d "${JAVA_HOME}/jre/lib/security" "jce_policy-${JAVA_VERSION}.zip" && \
+    rm "${JAVA_HOME}/jre/lib/security/README.txt" && \
+    rm /tmp/*
     
 # Add executables to path
 RUN update-alternatives --install "/usr/bin/java" "java" "/opt/java/bin/java" 1 && \
@@ -42,12 +39,6 @@ RUN update-alternatives --install "/usr/bin/java" "java" "/opt/java/bin/java" 1 
     update-alternatives --set "javac" "/opt/java/bin/javac" && \
     update-alternatives --install "/usr/bin/keytool" "keytool" "/opt/java/bin/keytool" 1 && \
     update-alternatives --set "keytool" "/opt/java/bin/keytool"
-
-# Create trusted ssl certs folder
-RUN mkdir -p $SSL_TRUSTED_CERTS_FOLDER
-
-# Mark as volume
-VOLUME $SSL_TRUSTED_CERTS_FOLDER
 
 # Force Docker to use UTF-8 encodings
 ENV LANG C.UTF-8
@@ -74,4 +65,4 @@ RUN update-alternatives --install "/usr/bin/mvn" "mvn" "/opt/mvn/bin/mvn" 1 && \
     update-alternatives --set "mvn" "/opt/mvn/bin/mvn" 
 
 # Cleaning
-rm -f /tmp/*
+RUN rm -f /tmp/*
