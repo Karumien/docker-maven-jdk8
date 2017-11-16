@@ -34,13 +34,6 @@ RUN wget --no-check-certificate https://github.com/frekele/oracle-java/releases/
     && ln -s /opt/${JDK_FOLDER} /opt/java \
     && rm -f jdk-${JDK_VERSION_UPDATE_DISTRO_ARCH}.tar.gz \
     && rm -f jdk-${JDK_VERSION_UPDATE_DISTRO_ARCH}.tar.gz.md5
-
-# Download zip file with java cryptography extension and unzip to jre security folder
-RUN wget --no-check-certificate https://github.com/frekele/oracle-java/releases/download/oracle_jce${JDK_VERSION}/jce_policy-${JDK_VERSION}.zip \
-    && unzip jce_policy-${JDK_VERSION}.zip \
-    && cp ${JCE_FOLDER}/*.jar ${JRE_SECURITY_FOLDER} \
-    && rm -f jce_policy-${JDK_VERSION}.zip \
-    && rm -rf ${JCE_FOLDER}
     
 # Add executables to path
 RUN update-alternatives --install "/usr/bin/java" "java" "/opt/java/bin/java" 1 && \
