@@ -1,5 +1,5 @@
 # CentOS based
-FROM centos:latest
+FROM centos:7
 MAINTAINER Miroslav Svoboda <miroslav.svoboda@karumien.com>
 
 # Set environment variables for versions
