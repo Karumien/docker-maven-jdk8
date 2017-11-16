@@ -1,6 +1,6 @@
 # Dockerfile Maven with Oracle JDK8 on CentOS 7
 
-This repository contains **Dockerfile** of [Java](https://www.java.com/) for [Docker](https://www.docker.com/)'s [automated build](https://registry.hub.docker.com/u/karumien/centos-maven-oracle-jdk8/) published to the public [Docker Hub Registry](https://registry.hub.docker.com/).
+This repository contains **Dockerfile** of [Java](https://www.java.com/) for [Docker](https://www.docker.com/)'s [automated build](https://registry.hub.docker.com/r/karumien/centos-maven-jdk8/) published to the public [Docker Hub Registry](https://registry.hub.docker.com/).
 
 
 ### Base Docker Image
@@ -12,9 +12,9 @@ This repository contains **Dockerfile** of [Java](https://www.java.com/) for [Do
 
 1. Install [Docker](https://www.docker.com/).
 
-2. Download [automated build](https://registry.hub.docker.com/u/karumien/centos-maven-oracle-jdk8/) from public [Docker Hub Registry](https://registry.hub.docker.com/): `docker pull karumien/centos-maven-oracle-jdk8`
+2. Download [automated build](https://registry.hub.docker.com/r/karumien/centos-maven-jdk8/) from public [Docker Hub Registry](https://registry.hub.docker.com/): `docker pull karumien/centos-maven-jdk8`
 
-   (alternatively, you can build an image from Dockerfile: `docker build -t="docker pull karumien/centos-maven-oracle-jdk8" github.com/karumien/docker-maven-jdk8`)
+   (alternatively, you can build an image from Dockerfile: `docker build -t="docker pull karumien/centos-maven-jdk8" github.com/karumien/docker-maven-jdk8`)
 
 
 ### Usage
