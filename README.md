@@ -10,7 +10,7 @@ This repository contains **Dockerfile** of [Java](https://www.java.com/) for [Do
 
 ### Versions
 
-* centos:latest
+* CentOS:latest
 * Oracle JDK 8u152-b16-linux-x64
 * Maven 3.5.2
 
